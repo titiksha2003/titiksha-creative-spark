@@ -8,9 +8,9 @@ const ProjectsSection = () => {
     {
       title: "Wizenko - Language Learning Platform",
       description: "Built a multilingual learning platform with AI-powered real-time speech practice and feedback. Features interactive lessons, pronunciation training, and progress tracking for language learners.",
-      image: "/lovable-uploads/f62a624f-bc6c-4743-b3d1-6947e8b42a17.png",
+      image: "/a.png",
       liveUrl: "https://linguagame-tutor-hub.lovable.app/",
-      githubUrl: "#",
+      githubUrl: "https://github.com/titiksha2003/linguagame-tutor-hub.git",
       tags: ["React", "TypeScript", "AI Integration", "Speech Recognition", "Educational"],
       featured: true,
       highlights: [
@@ -23,9 +23,9 @@ const ProjectsSection = () => {
     {
       title: "Vibematch - Audience Analytics",
       description: "AI-based platform helping influencers, NGOs, and brands discover their niche audience and validate content impact. Features audience analysis, content optimization, and engagement metrics.",
-      image: "/lovable-uploads/f62a624f-bc6c-4743-b3d1-6947e8b42a17.png",
+      image: "/b.png",
       liveUrl: "https://audience-whisper-lab-app.vercel.app/",
-      githubUrl: "#",
+      githubUrl: "https://github.com/titiksha2003/audience-whisper-lab-app.git",
       tags: ["React", "AI/ML", "Data Analytics", "Content Strategy", "Marketing"],
       featured: true,
       highlights: [
@@ -62,16 +62,29 @@ const ProjectsSection = () => {
               <div className={`grid lg:grid-cols-2 gap-0 ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
                 {/* Project Image */}
                 <div className={`relative overflow-hidden bg-gradient-primary/10 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
-                  <div className="aspect-video lg:aspect-auto lg:h-full flex items-center justify-center p-8">
-                    <div className="w-full h-full bg-gradient-primary/20 rounded-lg flex items-center justify-center">
-                      <div className="text-center">
-                        <Star className="w-16 h-16 mx-auto mb-4 text-primary" />
-                        <p className="text-primary font-semibold">Project Preview</p>
+                  <div className="aspect-[16/9] lg:aspect-[16/10] flex items-center justify-center p-6">
+                    <div className="relative w-full h-full rounded-lg overflow-hidden shadow-lg border border-border/30" style={{ maxWidth: "95%" }}>
+                      {/* Browser-like top bar */}
+                      <div className="absolute top-0 left-0 right-0 h-6 bg-background/90 border-b border-border/30 flex items-center px-2 z-10">
+                        <div className="flex space-x-1.5">
+                          <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                          <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                        </div>
+                        <div className="mx-auto bg-muted/50 rounded-sm h-3.5 w-2/3 flex items-center justify-center">
+                          <div className="text-[6px] text-muted-foreground truncate">{project.liveUrl}</div>
+                        </div>
                       </div>
+                      {/* Screenshot */}
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover mt-6"
+                      />
                     </div>
                   </div>
                   {project.featured && (
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-4 z-10">
                       <Badge variant="default" className="bg-accent text-accent-foreground">
                         ⭐ Featured
                       </Badge>
@@ -141,7 +154,11 @@ const ProjectsSection = () => {
           <p className="text-muted-foreground mb-6">
             More exciting projects are in development. Stay tuned for updates!
           </p>
-          <Button variant="outline" size="lg">
+          <Button 
+            variant="outline" 
+            size="lg"
+            onClick={() => window.open('https://github.com/titiksha2003', '_blank')}
+          >
             View All Projects on GitHub
           </Button>
         </div>

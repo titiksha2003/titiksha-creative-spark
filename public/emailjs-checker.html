@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EmailJS Service Checker</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.5;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .status {
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+      display: none;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .info {
+      background-color: #e2f0fb;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <h1>EmailJS Service Checker</h1>
+  <p>This tool helps diagnose issues with your EmailJS configuration by checking if your services, templates, and public key are valid.</p>
+
+  <div class="card">
+    <h2>1. Check EmailJS Public Key</h2>
+    <p>First, let's verify that your EmailJS public key is valid by initializing the EmailJS library.</p>
+    <div>
+      <label for="publicKey">Public Key:</label>
+      <input type="text" id="publicKey" value="FZoGm_0seAxnQPjf5" style="width: 300px; padding: 8px; margin: 10px 0;">
+    </div>
+    <button id="checkPublicKey">Check Public Key</button>
+    <div id="publicKeyStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>2. Check Email Service</h2>
+    <p>Next, let's verify that your EmailJS service ID exists and is accessible.</p>
+    <div>
+      <label for="serviceId">Service ID:</label>
+      <input type="text" id="serviceId" value="portfolio2003" style="width: 300px; padding: 8px; margin: 10px 0;">
+    </div>
+    <button id="checkService">Check Service</button>
+    <div id="serviceStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>3. Check Email Template</h2>
+    <p>Let's verify that your EmailJS template ID exists and has the right variables.</p>
+    <div>
+      <label for="templateId">Template ID:</label>
+      <input type="text" id="templateId" value="template_vxhyt5n" style="width: 300px; padding: 8px; margin: 10px 0;">
+    </div>
+    <button id="checkTemplate">Check Template</button>
+    <div id="templateStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>4. Send Test Email</h2>
+    <p>Now let's try sending a test email with your configuration.</p>
+
+    <table>
+      <tr>
+        <th>Setting</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Service ID</td>
+        <td id="testServiceId">portfolio2003</td>
+      </tr>
+      <tr>
+        <td>Template ID</td>
+        <td id="testTemplateId">template_vxhyt5n</td>
+      </tr>
+      <tr>
+        <td>Public Key</td>
+        <td id="testPublicKey">FZoGm_0seAxnQPjf5</td>
+      </tr>
+    </table>
+
+    <h3>Test Email Data</h3>
+    <form id="testForm">
+      <div style="margin-bottom: 10px;">
+        <label for="testName">Name:</label>
+        <input type="text" id="testName" name="from_name" value="Test User" style="width: 100%; padding: 8px;">
+      </div>
+      <div style="margin-bottom: 10px;">
+        <label for="testEmail">Email:</label>
+        <input type="email" id="testEmail" name="from_email" value="test@example.com" style="width: 100%; padding: 8px;">
+      </div>
+      <div style="margin-bottom: 10px;">
+        <label for="testSubject">Subject:</label>
+        <input type="text" id="testSubject" name="subject" value="EmailJS Test" style="width: 100%; padding: 8px;">
+      </div>
+      <div style="margin-bottom: 10px;">
+        <label for="testMessage">Message:</label>
+        <textarea id="testMessage" name="message" rows="4" style="width: 100%; padding: 8px;">This is a test email to verify EmailJS is working correctly.</textarea>
+      </div>
+      <input type="hidden" name="to_name" value="Titiksha">
+      <input type="hidden" name="to_email" value="titiksha2003dwivedi@gmail.com">
+      <input type="hidden" name="reply_to" id="replyTo" value="test@example.com">
+      
+      <button type="submit" id="sendTest">Send Test Email</button>
+    </form>
+    <div id="sendStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>5. View EmailJS Documentation</h2>
+    <p>If you're still having issues, check the official EmailJS documentation:</p>
+    <ul>
+      <li><a href="https://www.emailjs.com/docs/introduction/how-does-emailjs-work/" target="_blank">How EmailJS Works</a></li>
+      <li><a href="https://www.emailjs.com/docs/sdk/installation/" target="_blank">EmailJS SDK Installation</a></li>
+      <li><a href="https://www.emailjs.com/docs/rest-api/send/" target="_blank">Send Email API</a></li>
+      <li><a href="https://www.emailjs.com/docs/tutorial/creating-email-template/" target="_blank">Creating Email Templates</a></li>
+    </ul>
+  </div>
+
+  <script>
+    // Update the test values when user changes them
+    document.getElementById('publicKey').addEventListener('input', function(e) {
+      document.getElementById('testPublicKey').textContent = e.target.value;
+    });
+    
+    document.getElementById('serviceId').addEventListener('input', function(e) {
+      document.getElementById('testServiceId').textContent = e.target.value;
+    });
+    
+    document.getElementById('templateId').addEventListener('input', function(e) {
+      document.getElementById('testTemplateId').textContent = e.target.value;
+    });
+    
+    document.getElementById('testEmail').addEventListener('input', function(e) {
+      document.getElementById('replyTo').value = e.target.value;
+    });
+
+    // Check Public Key
+    document.getElementById('checkPublicKey').addEventListener('click', function() {
+      const publicKey = document.getElementById('publicKey').value;
+      const statusDiv = document.getElementById('publicKeyStatus');
+      
+      statusDiv.style.display = 'block';
+      statusDiv.className = 'status info';
+      statusDiv.innerHTML = 'Checking public key...';
+      
+      try {
+        // Try to initialize EmailJS with the provided key
+        emailjs.init(publicKey);
+        
+        statusDiv.className = 'status success';
+        statusDiv.innerHTML = '<strong>Success!</strong> Public key accepted by EmailJS.';
+      } catch (error) {
+        statusDiv.className = 'status error';
+        statusDiv.innerHTML = `<strong>Error!</strong> Failed to initialize EmailJS with the provided public key:<br>${error.message || error}`;
+      }
+    });
+    
+    // Check Service ID (we'll do a simple test send with minimal data)
+    document.getElementById('checkService').addEventListener('click', function() {
+      const serviceId = document.getElementById('serviceId').value;
+      const publicKey = document.getElementById('publicKey').value;
+      const statusDiv = document.getElementById('serviceStatus');
+      
+      statusDiv.style.display = 'block';
+      statusDiv.className = 'status info';
+      statusDiv.innerHTML = 'Checking service ID...';
+      
+      // Try to initialize EmailJS again with the potentially updated key
+      try {
+        emailjs.init(publicKey);
+      } catch (error) {
+        statusDiv.className = 'status error';
+        statusDiv.innerHTML = `<strong>Error!</strong> Failed to initialize EmailJS with the provided public key:<br>${error.message || error}`;
+        return;
+      }
+      
+      // Try a minimal send with just the service ID to see if it exists
+      emailjs.send(serviceId, 'template_test', {test: 'test'})
+        .then(function() {
+          // This would only succeed if both service and template exist
+          statusDiv.className = 'status success';
+          statusDiv.innerHTML = '<strong>Success!</strong> Service ID appears to be valid.';
+        })
+        .catch(function(error) {
+          // Check if the error is specifically about the service not existing
+          if (error && error.text && error.text.includes('service ID not found')) {
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `<strong>Error!</strong> Service ID "${serviceId}" not found.<br>
+                                  <pre>${error.text}</pre>
+                                  <p>Make sure the service ID exists in your EmailJS account and is spelled correctly.</p>`;
+          } else if (error && error.text && error.text.includes('template ID not found')) {
+            // If the error is about the template, the service likely exists
+            statusDiv.className = 'status success';
+            statusDiv.innerHTML = '<strong>Success!</strong> Service ID appears to be valid (template error, but service was found).';
+          } else {
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `<strong>Warning!</strong> Could not verify service ID:<br>
+                                  <pre>${error.text || JSON.stringify(error)}</pre>`;
+          }
+        });
+    });
+    
+    // Check Template ID
+    document.getElementById('checkTemplate').addEventListener('click', function() {
+      const serviceId = document.getElementById('serviceId').value;
+      const templateId = document.getElementById('templateId').value;
+      const publicKey = document.getElementById('publicKey').value;
+      const statusDiv = document.getElementById('templateStatus');
+      
+      statusDiv.style.display = 'block';
+      statusDiv.className = 'status info';
+      statusDiv.innerHTML = 'Checking template ID...';
+      
+      // Try to initialize EmailJS again with the potentially updated key
+      try {
+        emailjs.init(publicKey);
+      } catch (error) {
+        statusDiv.className = 'status error';
+        statusDiv.innerHTML = `<strong>Error!</strong> Failed to initialize EmailJS with the provided public key:<br>${error.message || error}`;
+        return;
+      }
+      
+      // Create minimal template parameters
+      const minimalParams = {
+        from_name: 'Test User',
+        from_email: 'test@example.com',
+        subject: 'Template Test',
+        message: 'Testing template',
+        to_name: 'Titiksha',
+        to_email: 'titiksha2003dwivedi@gmail.com',
+        reply_to: 'test@example.com'
+      };
+      
+      // Try sending with just enough data to test the template
+      emailjs.send(serviceId, templateId, minimalParams)
+        .then(function(response) {
+          statusDiv.className = 'status success';
+          statusDiv.innerHTML = `<strong>Success!</strong> Template ID appears to be valid and contains all required variables.<br>
+                                <pre>Status: ${response.status}
+Text: ${response.text}</pre>`;
+        })
+        .catch(function(error) {
+          if (error && error.text && error.text.includes('template ID not found')) {
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `<strong>Error!</strong> Template ID "${templateId}" not found.<br>
+                                  <pre>${error.text}</pre>
+                                  <p>Make sure the template ID exists in your EmailJS account and is spelled correctly.</p>`;
+          } else if (error && error.text && error.text.includes('service ID not found')) {
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `<strong>Error!</strong> Service ID not found. Please check your service ID first.<br>
+                                  <pre>${error.text}</pre>`;
+          } else {
+            statusDiv.className = 'status error';
+            statusDiv.innerHTML = `<strong>Warning!</strong> Could not verify template ID:<br>
+                                  <pre>${error.text || JSON.stringify(error)}</pre>`;
+          }
+        });
+    });
+    
+    // Send Test Email
+    document.getElementById('testForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const serviceId = document.getElementById('testServiceId').textContent;
+      const templateId = document.getElementById('testTemplateId').textContent;
+      const publicKey = document.getElementById('testPublicKey').textContent;
+      const statusDiv = document.getElementById('sendStatus');
+      const form = this;
+      
+      statusDiv.style.display = 'block';
+      statusDiv.className = 'status info';
+      statusDiv.innerHTML = 'Sending test email...';
+      
+      // Try to initialize EmailJS again with the potentially updated key
+      try {
+        emailjs.init(publicKey);
+      } catch (error) {
+        statusDiv.className = 'status error';
+        statusDiv.innerHTML = `<strong>Error!</strong> Failed to initialize EmailJS with the provided public key:<br>${error.message || error}`;
+        return;
+      }
+      
+      // Log the parameters for debugging
+      const formData = new FormData(form);
+      const params = {};
+      formData.forEach((value, key) => {
+        params[key] = value;
+      });
+      
+      console.log('Sending with parameters:', params);
+      
+      // Send the test email
+      emailjs.sendForm(serviceId, templateId, form, publicKey)
+        .then(function(response) {
+          statusDiv.className = 'status success';
+          statusDiv.innerHTML = `<strong>Success!</strong> Test email sent successfully.<br>
+                                <pre>Status: ${response.status}
+Text: ${response.text}</pre>
+                                <p>The email should be delivered to titiksha2003dwivedi@gmail.com shortly.</p>`;
+        })
+        .catch(function(error) {
+          statusDiv.className = 'status error';
+          statusDiv.innerHTML = `<strong>Error!</strong> Failed to send test email:<br>
+                                <pre>${error.text || JSON.stringify(error)}</pre>
+                                <p>Please check the error message and make sure all IDs are correct.</p>`;
+          
+          // Add specific error handling
+          if (error && error.text) {
+            if (error.text.includes('service ID not found')) {
+              statusDiv.innerHTML += `<p><strong>Specific issue:</strong> Service ID "${serviceId}" was not found in your EmailJS account. Double-check this ID in your EmailJS dashboard.</p>`;
+            } else if (error.text.includes('template ID not found')) {
+              statusDiv.innerHTML += `<p><strong>Specific issue:</strong> Template ID "${templateId}" was not found in your EmailJS account. Double-check this ID in your EmailJS dashboard.</p>`;
+            } else if (error.text.includes('invalid key')) {
+              statusDiv.innerHTML += `<p><strong>Specific issue:</strong> The public key "${publicKey}" is invalid. Check your EmailJS dashboard for the correct public key.</p>`;
+            }
+          }
+        });
+    });
+  </script>
+</body>
+</html>

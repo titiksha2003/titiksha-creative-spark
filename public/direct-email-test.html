@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direct EmailJS Test</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      padding: 12px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #status {
+      margin-top: 20px;
+      padding: 15px;
+      display: none;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .info {
+      background-color: #e2f0fb;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+    }
+    .debug-info {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border: 1px solid #eee;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Direct EmailJS Test</h1>
+  <p>This page directly tests your EmailJS configuration to help diagnose issues.</p>
+  
+  <form id="testForm">
+    <div class="form-group">
+      <label for="serviceId">Service ID:</label>
+      <input type="text" id="serviceId" value="portfolio2003" required>
+      <small>Your EmailJS service ID (check your EmailJS dashboard)</small>
+    </div>
+    
+    <div class="form-group">
+      <label for="templateId">Template ID:</label>
+      <input type="text" id="templateId" value="template_vxhyt5n" required>
+      <small>Your EmailJS template ID (check your EmailJS dashboard)</small>
+    </div>
+    
+    <div class="form-group">
+      <label for="publicKey">Public Key:</label>
+      <input type="text" id="publicKey" value="FZoGm_0seAxnQPjf5" required>
+      <small>Your EmailJS public key (check your EmailJS dashboard)</small>
+    </div>
+    
+    <hr style="margin: 30px 0;">
+    
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" value="Test User" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" value="test@example.com" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" value="EmailJS Test" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <textarea id="message" rows="5" required>This is a test message to verify EmailJS is working correctly.</textarea>
+    </div>
+    
+    <button type="submit" id="sendButton">Send Test Email</button>
+  </form>
+  
+  <div id="status"></div>
+  
+  <div class="debug-info">
+    <h3>Debug Information</h3>
+    <div id="debugInfo"></div>
+  </div>
+  
+  <script type="text/javascript">
+    // Don't initialize EmailJS yet - we'll do it with the user's input
+    
+    document.getElementById('testForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const statusDiv = document.getElementById('status');
+      const debugInfoDiv = document.getElementById('debugInfo');
+      const sendButton = document.getElementById('sendButton');
+      
+      statusDiv.style.display = 'block';
+      statusDiv.innerHTML = "Sending...";
+      statusDiv.className = 'info';
+      sendButton.disabled = true;
+      
+      // Get values from the form
+      const serviceID = document.getElementById('serviceId').value;
+      const templateID = document.getElementById('templateId').value;
+      const publicKey = document.getElementById('publicKey').value;
+      
+      // Debug info
+      debugInfoDiv.innerHTML = `<p>Attempting to send email with:</p>
+        <pre>Service ID: ${serviceID}
+Template ID: ${templateID}
+Public Key: ${publicKey}</pre>`;
+      
+      // Initialize EmailJS with the provided public key
+      emailjs.init(publicKey);
+      
+      const templateParams = {
+        from_name: document.getElementById('name').value,
+        from_email: document.getElementById('email').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+        to_name: "Titiksha",
+        to_email: "titiksha2003dwivedi@gmail.com",
+        reply_to: document.getElementById('email').value
+      };
+      
+      debugInfoDiv.innerHTML += `<p>Template Parameters:</p><pre>${JSON.stringify(templateParams, null, 2)}</pre>`;
+      
+      emailjs.send(serviceID, templateID, templateParams)
+        .then(function(response) {
+          console.log('SUCCESS!', response);
+          statusDiv.innerHTML = `<strong>Success!</strong> Email sent successfully.<br>
+            Status: ${response.status}<br>
+            Text: ${response.text}`;
+          statusDiv.className = 'success';
+          debugInfoDiv.innerHTML += `<p>Response:</p><pre>${JSON.stringify(response, null, 2)}</pre>`;
+        }, function(error) {
+          console.log('FAILED...', error);
+          statusDiv.innerHTML = `<strong>Error!</strong> Failed to send email.<br>
+            Status: ${error.status}<br>
+            Text: ${error.text}`;
+          statusDiv.className = 'error';
+          debugInfoDiv.innerHTML += `<p>Error:</p><pre>${JSON.stringify(error, null, 2)}</pre>`;
+        })
+        .finally(function() {
+          sendButton.disabled = false;
+        });
+    });
+  </script>
+</body>
+</html>

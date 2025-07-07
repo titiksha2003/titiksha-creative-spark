@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Download } from "lucide-react";
+import { downloadFile } from "@/lib/download-utils";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +63,12 @@ const Navbar = () => {
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </button>
               ))}
-              <Button variant="accent" size="sm" className="ml-4">
+              <Button 
+                variant="accent" 
+                size="sm" 
+                className="ml-4"
+                onClick={() => downloadFile('/RESUME.pdf', 'Titiksha_Resume.pdf')}
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Resume
               </Button>
@@ -96,7 +102,12 @@ const Navbar = () => {
               </button>
             ))}
             <div className="px-3 py-2">
-              <Button variant="accent" size="sm" className="w-full">
+              <Button 
+                variant="accent" 
+                size="sm" 
+                className="w-full"
+                onClick={() => downloadFile('/RESUME.pdf', 'Titiksha_Resume.pdf')}
+              >
                 <Download className="w-4 h-4 mr-2" />
                 Download Resume
               </Button>

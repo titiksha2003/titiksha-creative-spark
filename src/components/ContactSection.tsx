@@ -6,32 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, Linkedin, Github, Download, Phone, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { downloadFile } from "@/lib/download-utils";
+import { EmailJSForm } from "./EmailJSForm";
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: ""
-  });
   const { toast } = useToast();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here (integrate with email service)
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for reaching out. I'll get back to you soon.",
-    });
-    setFormData({ name: "", email: "", subject: "", message: "" });
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
 
   const contactInfo = [
     {
@@ -97,62 +76,7 @@ const ContactSection = () => {
               <CardTitle className="text-2xl text-primary">Send a Message</CardTitle>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Your name"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="your@email.com"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    placeholder="What's this about?"
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell me about your project or opportunity..."
-                    rows={5}
-                    required
-                  />
-                </div>
-                
-                <Button type="submit" variant="gradient" size="lg" className="w-full">
-                  Send Message
-                </Button>
-              </form>
+              <EmailJSForm />
             </CardContent>
           </Card>
 
@@ -218,7 +142,12 @@ const ContactSection = () => {
                   <p className="text-muted-foreground mb-6">
                     Get a detailed overview of my experience, skills, and achievements.
                   </p>
-                  <Button variant="accent" size="lg" className="w-full">
+                  <Button 
+                    variant="accent" 
+                    size="lg" 
+                    className="w-full"
+                    onClick={() => downloadFile('/RESUME.pdf', 'Titiksha_Resume.pdf')}
+                  >
                     <Download className="w-5 h-5 mr-2" />
                     Download PDF Resume
                   </Button>
