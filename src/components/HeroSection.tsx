@@ -19,12 +19,6 @@ const HeroSection = () => {
       </div>
 
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        {/* Profile Image Placeholder */}
-        <div className="mb-8">
-          <div className="w-32 h-32 mx-auto bg-gradient-primary rounded-full shadow-primary animate-scale-in flex items-center justify-center text-4xl font-bold text-primary-foreground">
-            TD
-          </div>
-        </div>
 
         {/* Main Heading */}
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in">
@@ -66,7 +60,7 @@ const HeroSection = () => {
         {/* Social Links */}
         <div className="flex justify-center space-x-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
           <a 
-            href="https://github.com/titiksha" 
+            href="https://github.com/titiksha2003" 
             target="_blank" 
             rel="noopener noreferrer"
             className="p-3 rounded-full bg-secondary hover:bg-accent transition-all duration-300 hover:scale-110 shadow-elegant hover:shadow-accent"
@@ -74,7 +68,7 @@ const HeroSection = () => {
             <Github className="w-6 h-6" />
           </a>
           <a 
-            href="https://linkedin.com/in/titiksha" 
+            href="https://www.linkedin.com/in/titiksha-dwivedi-8097ab265/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="p-3 rounded-full bg-secondary hover:bg-primary transition-all duration-300 hover:scale-110 shadow-elegant hover:shadow-primary"
@@ -82,7 +76,7 @@ const HeroSection = () => {
             <Linkedin className="w-6 h-6" />
           </a>
           <a 
-            href="mailto:titiksha@example.com"
+            href="mailto:titiksha2003dwivedi@gmail.com"
             className="p-3 rounded-full bg-secondary hover:bg-accent transition-all duration-300 hover:scale-110 shadow-elegant hover:shadow-accent"
           >
             <Mail className="w-6 h-6" />

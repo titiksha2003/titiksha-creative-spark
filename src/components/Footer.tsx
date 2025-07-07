@@ -6,17 +6,17 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: Github,
-      href: "https://github.com/titiksha-dwivedi",
+      href: "https://github.com/titiksha2003",
       label: "GitHub"
     },
     {
       icon: Linkedin,
-      href: "https://linkedin.com/in/titiksha-dwivedi", 
+      href: "https://www.linkedin.com/in/titiksha-dwivedi-8097ab265/", 
       label: "LinkedIn"
     },
     {
       icon: Mail,
-      href: "mailto:titiksha.dwivedi@example.com",
+      href: "mailto:titiksha2003dwivedi@gmail.com",
       label: "Email"
     }
   ];

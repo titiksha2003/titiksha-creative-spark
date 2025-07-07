@@ -37,14 +37,14 @@ const ContactSection = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "titiksha.dwivedi@example.com",
-      href: "mailto:titiksha.dwivedi@example.com"
+      value: "titiksha2003dwivedi@gmail.com",
+      href: "mailto:titiksha2003dwivedi@gmail.com"
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+91 XXXXX XXXXX",
-      href: "tel:+91XXXXXXXXX"
+      value: "+91 8826081003",
+      href: "tel:+918826081003"
     },
     {
       icon: MapPin,
@@ -58,19 +58,19 @@ const ContactSection = () => {
     {
       icon: Linkedin,
       label: "LinkedIn",
-      href: "https://linkedin.com/in/titiksha-dwivedi",
+      href: "https://www.linkedin.com/in/titiksha-dwivedi-8097ab265/",
       color: "hover:text-blue-600"
     },
     {
       icon: Github,
       label: "GitHub",
-      href: "https://github.com/titiksha-dwivedi",
+      href: "https://github.com/titiksha2003",
       color: "hover:text-gray-800"
     },
     {
       icon: Mail,
       label: "Email",
-      href: "mailto:titiksha.dwivedi@example.com",
+      href: "mailto:titiksha2003dwivedi@gmail.com",
       color: "hover:text-red-600"
     }
   ];
