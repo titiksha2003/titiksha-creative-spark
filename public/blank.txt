@@ -1,0 +1,2 @@
+<!-- This is an empty file used to replace favicon.ico -->
+<!-- The content is intentionally left blank as we don't want any favicon to appear -->
